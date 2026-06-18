@@ -37,6 +37,7 @@ public class FootballManagement {
         menu.addItem("7. Search players by partial player name");
         menu.addItem("8. Add a new player");
         menu.addItem("9. Remove a player with ID");
+        menu.addItem("10. Update a player with an ID");
         int choice;
         
         do{
@@ -116,8 +117,21 @@ public class FootballManagement {
                         System.out.println("This player does not exist!");
                     }
                     break;
+                case 10:
+                    Player player = players.searchById(ndl.inputAndLoop("Enter player ID: ", Acceptable.PLAYER_ID_VALID));
+                    if(player != null){
+                        Player newInformation = ndl.enterPlayerInfo(true);
+                        if(players.updatePlayer(player, newInformation)){
+                            System.out.println("Updated player successfully!");
+                        } else {
+                            System.out.println("This shirt number already exists in this club!");
+                        }
+                    } else {
+                        System.out.println("This player does not exist!");
+                    }
+                    break;
             }
-        }while(choice >= 1 && choice <= 9);
+        }while(choice >= 1 && choice <= 10);
     }
     
     public static void displayClub(Club c){

@@ -22,125 +22,141 @@ import java.util.logging.Logger;
  *
  * @author ADMIN
  */
-public class PlayerList extends ArrayList<Player>{
+public class PlayerList extends ArrayList<Player> {
+
     private final String pathFile = "players.txt";
     private final String HEADER_TABLE = String.format("|---------------------------------------------------------------------|\n"
-                                                    + "| %-9s | %-6s | %-15s | %-12s | %-12s |%n"
-                                                    + "|---------------------------------------------------------------------|", "Player ID", "Club ID", "Player Name", "Position", "Shirt Number");
+            + "| %-9s | %-6s | %-15s | %-12s | %-12s |%n"
+            + "|---------------------------------------------------------------------|", "Player ID", "Club ID", "Player Name", "Position", "Shirt Number");
     private final String FOOTER_TABLE = "|---------------------------------------------------------------------|";
-    
-    public boolean removePlayer(String id){
+
+    public boolean updatePlayer(Player player, Player newInformation) {
+        if (player.getShirtNumber() == newInformation.getShirtNumber() || !isExistedShirtNumber(newInformation.getShirtNumber(), player.getClubId())) {
+            if (!newInformation.getPlayerName().equals("") || !newInformation.getPlayerName().isEmpty()) {
+                player.setPlayerName(newInformation.getPlayerName());
+            }
+            if (!newInformation.getPosition().equals("") || !newInformation.getPosition().isEmpty()) {
+                player.setPosition(newInformation.getPosition());
+            }
+            if (newInformation.getShirtNumber() != -1) {
+                player.setShirtNumber(newInformation.getShirtNumber());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removePlayer(String id) {
         Player deletedPlayer = searchById(id);
-        if(deletedPlayer == null){
+        if (deletedPlayer == null) {
             return false;
         }
         this.remove(deletedPlayer);
         return true;
     }
-    
-    public int addPlayer(Player p){
-        if(searchById(p.getPlayerId()) != null){
+
+    public int addPlayer(Player p) {
+        if (searchById(p.getPlayerId()) != null) {
             return 1;
         }
-        if(isExistedShirtNumber(p.getShirtNumber(), p.getClubId())){
+        if (isExistedShirtNumber(p.getShirtNumber(), p.getClubId())) {
             return 2;
         }
         this.add(p);
         return 3;
     }
-    
-    public ArrayList<Player> searchByName(String name){
+
+    public ArrayList<Player> searchByName(String name) {
         ArrayList<Player> players = new ArrayList<>();
-        for(Player p : this){
-            if(p.getPlayerName().toLowerCase().contains(name.toLowerCase())){
+        for (Player p : this) {
+            if (p.getPlayerName().toLowerCase().contains(name.toLowerCase())) {
                 players.add(p);
             }
         }
         return players;
     }
-    
-    public Player searchById(String id){
-        for(Player p : this){
-            if(p.getPlayerId().equalsIgnoreCase(id)){
+
+    public Player searchById(String id) {
+        for (Player p : this) {
+            if (p.getPlayerId().equalsIgnoreCase(id)) {
                 return p;
             }
         }
         return null;
     }
-    
-    public boolean isExistedShirtNumber(int shirtNumber, String clubId){
-        for(Player p : this){
-            if(p.getClubId().equalsIgnoreCase(clubId)){
-                if(p.getShirtNumber() == shirtNumber){
+
+    public boolean isExistedShirtNumber(int shirtNumber, String clubId) {
+        for (Player p : this) {
+            if (p.getClubId().equalsIgnoreCase(clubId)) {
+                if (p.getShirtNumber() == shirtNumber) {
                     return true;
                 }
             }
         }
         return false;
     }
-    
-    
-    public String getClubName(Player p, ClubList clublist){
-        for(Club c : clublist){
-            if(c.getClubId().equalsIgnoreCase(p.getClubId())){
+
+    public String getClubName(Player p, ClubList clublist) {
+        for (Club c : clublist) {
+            if (c.getClubId().equalsIgnoreCase(p.getClubId())) {
                 return c.getClubName();
             }
         }
         return "";
     }
-    
-    public ArrayList<Player> sortPlayerByClubAndNumber(ClubList clubs){
+
+    public ArrayList<Player> sortPlayerByClubAndNumber(ClubList clubs) {
         ArrayList<Player> players = new ArrayList<>(this);
-        
+
         Collections.sort(players, Comparator.comparing((Player p) -> getClubName(p, clubs)).thenComparingInt(Player::getShirtNumber));
-        
+
         return players;
     }
-    
-    public void showAll(List<Player> p){
+
+    public void showAll(List<Player> p) {
         System.out.println(HEADER_TABLE);
-        for(Player i : p){
+        for (Player i : p) {
             System.out.println(i.toString());
         }
         System.out.println(FOOTER_TABLE);
     }
-    
-    public Player dataToObject(String text){
+
+    public Player dataToObject(String text) {
         String[] data = text.split(",");
         return new Player(data[0].trim(), data[1].trim(), data[2].trim(), data[3].trim(), Integer.parseInt(data[4].trim()));
     }
-    
-    public void readFromFile(){
+
+    public void readFromFile() {
         FileReader fr = null;
-        try{
+        try {
             File f = new File(pathFile);
-            
-            if(!f.exists()){
+
+            if (!f.exists()) {
                 System.out.println("players.txt file not found!");
                 return;
             }
-            
+
             fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
             String temp = "";
-            
-            while ((temp = br.readLine()) != null){
+
+            while ((temp = br.readLine()) != null) {
                 Player i = dataToObject(temp);
-                if(i != null){
+                if (i != null) {
                     this.add(i);
                 }
             }
             br.close();
-        } catch (FileNotFoundException ex){
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(PlayerList.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex){
+        } catch (IOException ex) {
             Logger.getLogger(PlayerList.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             Logger.getLogger(PlayerList.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 fr.close();
-            } catch (IOException ex){
+            } catch (IOException ex) {
                 Logger.getLogger(PlayerList.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
