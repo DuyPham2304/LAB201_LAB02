@@ -63,6 +63,21 @@ public class Inputter {
         } while (more);
         return result;
     }
+    
+    public String enterPosition(String mess, boolean isUpdate){
+        String input;
+        if(isUpdate){
+            input = inputOptionalAndLoop(mess, Acceptable.POSITION_VALID).toLowerCase();
+            if(!input.isEmpty() || !input.equals("")){
+                return input.substring(0, 1).toUpperCase() + input.substring(1);
+            } else {
+                return input;
+            }
+        } else {
+            input = inputAndLoop(mess, Acceptable.POSITION_VALID).toLowerCase();
+            return input.substring(0, 1).toUpperCase() + input.substring(1);
+        }
+    }
 
     public Club enterClubInfo(boolean isUpdate) {
         if (isUpdate) {
@@ -88,7 +103,7 @@ public class Inputter {
     public Player enterPlayerInfo(boolean isUpdate) {
         if (isUpdate) {
             String playerName = inputOptionalAndLoop("Enter new player name: ", Acceptable.PLAYER_NAME_VALID);
-            String position = inputOptionalAndLoop("Enter new position name: ", Acceptable.POSITION_VALID);
+            String position = enterPosition("Enter new position (Goalkeeper, Defender, Midfielder, Forward, Winger): ", isUpdate);
             int shirtNumber;
             String stringShirtNumber = inputOptionalAndLoop("Enter new shirt number: ", Acceptable.SHIRT_NUMBER_VALID);
             if(stringShirtNumber.isEmpty() || stringShirtNumber.equals("")){
@@ -101,7 +116,7 @@ public class Inputter {
             String playerId = inputAndLoop("Enter Player ID: ", Acceptable.PLAYER_ID_VALID);
             String clubId = inputAndLoop("Enter Club ID: ", Acceptable.CLUB_ID_VALID);
             String playerName = inputAndLoop("Enter Player Name: ", Acceptable.PLAYER_NAME_VALID);
-            String position = inputAndLoop("Enter Position: ", Acceptable.POSITION_VALID);
+            String position = enterPosition("Enter position (Goalkeeper, Defender, Midfielder, Forward, Winger): ", isUpdate);
             int shirtNumber = Integer.parseInt(inputAndLoop("Enter shirt number: ", Acceptable.SHIRT_NUMBER_VALID));
             return new Player(playerId, clubId, playerName, position, shirtNumber);
         }

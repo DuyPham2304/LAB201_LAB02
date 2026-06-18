@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,6 +31,19 @@ public class PlayerList extends ArrayList<Player> {
             + "| %-9s | %-6s | %-15s | %-12s | %-12s |%n"
             + "|---------------------------------------------------------------------|", "Player ID", "Club ID", "Player Name", "Position", "Shirt Number");
     private final String FOOTER_TABLE = "|---------------------------------------------------------------------|";
+    
+    public ArrayList<Player> listAllPlayersByPostition(String position){
+        ArrayList<Player> players = new ArrayList<>();
+        for(Player p : this){
+            if(p.getPosition().equalsIgnoreCase(position)){
+                players.add(p);
+            }
+        }
+        if(players.isEmpty()){
+            return null;
+        }
+        return players;
+    }
 
     public boolean updatePlayer(Player player, Player newInformation) {
         if (player.getShirtNumber() == newInformation.getShirtNumber() || !isExistedShirtNumber(newInformation.getShirtNumber(), player.getClubId())) {
@@ -159,6 +174,23 @@ public class PlayerList extends ArrayList<Player> {
             } catch (IOException ex) {
                 Logger.getLogger(PlayerList.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    public void saveToFile() {
+        try {
+            File f = new File(pathFile);
+            FileWriter fw = new FileWriter(f);
+            PrintWriter pw = new PrintWriter(fw);
+            
+            for(Player p : this){
+                String line = String.format("%s, %s, %s, %s, %d", p.getPlayerId(), p.getClubId(), p.getPlayerName(), p.getPosition(), p.getShirtNumber());
+                pw.println(line);
+            }
+            pw.close();
+            fw.close();
+        } catch (IOException ex){
+            Logger.getLogger(PlayerList.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

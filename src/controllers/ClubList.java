@@ -9,7 +9,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -117,6 +119,23 @@ public class ClubList extends ArrayList<Club> {
             } catch (IOException ex) {
                 Logger.getLogger(ClubList.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    public void saveToFile(){
+        try{
+            File f = new File(pathFile);
+            FileWriter fw = new FileWriter(f);
+            PrintWriter pw = new PrintWriter(fw);
+            
+            for(Club c : this){
+                String line = String.format("%s, %s, %s, %d", c.getClubId(), c.getClubName(), c.getSponsorName(), c.getBudget());
+                pw.println(line);
+            }
+            pw.close();
+            fw.close();
+        } catch (IOException ex){
+            Logger.getLogger(ClubList.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

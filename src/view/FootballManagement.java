@@ -38,6 +38,7 @@ public class FootballManagement {
         menu.addItem("8. Add a new player");
         menu.addItem("9. Remove a player with ID");
         menu.addItem("10. Update a player with an ID");
+        menu.addItem("11. List all players by a specific position");
         int choice;
         
         do{
@@ -130,8 +131,21 @@ public class FootballManagement {
                         System.out.println("This player does not exist!");
                     }
                     break;
+                case 11:
+                    ArrayList<Player> listPlayersByPosition = players.listAllPlayersByPostition(ndl.enterPosition("Enter position (Goalkeeper, Defender, Midfielder, Forward, Winger): ", false));
+                    if(listPlayersByPosition == null){
+                        System.out.println("There is no player with this position in the system!");
+                    } else {
+                        players.showAll(listPlayersByPosition);
+                    }
+                    break;
+                case 12:
+                    players.saveToFile();
+                    clubs.saveToFile();
+                    System.out.println("Save data sucessfully!");
+                    break;
             }
-        }while(choice >= 1 && choice <= 10);
+        }while(choice >= 1 && choice <= 12);
     }
     
     public static void displayClub(Club c){
