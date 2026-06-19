@@ -18,6 +18,8 @@ public interface Acceptable {
     public final String PLAYER_NAME_VALID = "^.{2,20}$";
     public final String SHIRT_NUMBER_VALID = "^[1-9]\\d?$";
     public final String POSITION_VALID = "(?i)^(Goalkeeper|Defender|Midfielder|Forward|Winger)$";
+    public final String CHOICE_VALID = "^[1-9]|1[0-4]$";
+    public final String YESNO_VALID = "^[YyNn]$";
     
     
     public static boolean isValid(String data, String pattern){

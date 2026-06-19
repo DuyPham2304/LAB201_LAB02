@@ -25,12 +25,17 @@ import java.util.logging.Logger;
  * @author ADMIN
  */
 public class PlayerList extends ArrayList<Player> {
+    private boolean save = true;
 
     private final String pathFile = "players.txt";
     private final String HEADER_TABLE = String.format("|---------------------------------------------------------------------|\n"
             + "| %-9s | %-6s | %-15s | %-12s | %-12s |%n"
             + "|---------------------------------------------------------------------|", "Player ID", "Club ID", "Player Name", "Position", "Shirt Number");
     private final String FOOTER_TABLE = "|---------------------------------------------------------------------|";
+
+    public boolean isSave() {
+        return save;
+    }        
     
     public ArrayList<Player> listAllPlayersByPostition(String position){
         ArrayList<Player> players = new ArrayList<>();
@@ -56,6 +61,7 @@ public class PlayerList extends ArrayList<Player> {
             if (newInformation.getShirtNumber() != -1) {
                 player.setShirtNumber(newInformation.getShirtNumber());
             }
+            this.save = false;
             return true;
         }
         return false;
@@ -67,6 +73,7 @@ public class PlayerList extends ArrayList<Player> {
             return false;
         }
         this.remove(deletedPlayer);
+        this.save = false;
         return true;
     }
 
@@ -78,6 +85,7 @@ public class PlayerList extends ArrayList<Player> {
             return 2;
         }
         this.add(p);
+        this.save = false;
         return 3;
     }
 

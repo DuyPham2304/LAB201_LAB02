@@ -22,12 +22,17 @@ import java.util.logging.Logger;
  * @author ADMIN
  */
 public class ClubList extends ArrayList<Club> {
+    private boolean save = true;
 
     private final String pathFile = "clubs.txt";
     private final String HEADER_TABLE = String.format("|--------------------------------------------------------------|\n"
             + "| %-5s | %-22s | %-15s | %-7s |%n"
             + "|--------------------------------------------------------------|", "Club ID", "Club Name", "Sponsor Brand", "Budget");
     private final String FOOTER_TABLE = "|--------------------------------------------------------------|";
+
+    public boolean isSave() {
+        return save;
+    }     
 
     public Club searchById(String id) {
         for (Club c : this) {
@@ -53,6 +58,7 @@ public class ClubList extends ArrayList<Club> {
             return false;
         } else {
             this.add(c);
+            this.save = false;
             return true;
         }
     }
@@ -67,6 +73,7 @@ public class ClubList extends ArrayList<Club> {
         if (newInformation.getBudget() != 0) {
             club.setBudget(newInformation.getBudget());
         }
+        this.save = false;
     }
 
     public void showAll() {

@@ -39,11 +39,14 @@ public class FootballManagement {
         menu.addItem("9. Remove a player with ID");
         menu.addItem("10. Update a player with an ID");
         menu.addItem("11. List all players by a specific position");
+        menu.addItem("12. Save data to files");
+        menu.addItem("13. Load data from files");
+        menu.addItem("14. Quit program");
         int choice;
         
         do{
             menu.showMenu();
-            choice = ndl.getInt("Choice: ");
+            choice = Integer.parseInt(ndl.inputAndLoop("Choice: ", Acceptable.CHOICE_VALID));
             switch (choice) {
                 case 1:
                     if(clubs.isEmpty()){
@@ -144,8 +147,20 @@ public class FootballManagement {
                     clubs.saveToFile();
                     System.out.println("Save data sucessfully!");
                     break;
+                case 13:
+                    players.readFromFile();
+                    clubs.readFromFile();
+                    System.out.println("Load data successfully!");
+                    break;
+                case 14:
+                    if(!clubs.isSave() || !players.isSave()){
+                        clubs.saveToFile();
+                        players.saveToFile();
+                        return;
+                    }
+                    return;
             }
-        }while(choice >= 1 && choice <= 12);
+        }while(choice >= 1 && choice <= 14);
     }
     
     public static void displayClub(Club c){
