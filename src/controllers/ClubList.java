@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +42,7 @@ public class ClubList extends ArrayList<Club> {
         return null;
     }
 
-    public List<Club> displayAllClubsWithBudget(int budget) {
+    public ArrayList<Club> displayAllClubsWithBudget(int budget) {
         ClubList list = new ClubList();
         for (Club c : this) {
             if (c.getBudget() <= budget) {
@@ -80,7 +79,7 @@ public class ClubList extends ArrayList<Club> {
         showAll(this);
     }
 
-    public void showAll(List<Club> l) {
+    public void showAll(ArrayList<Club> l) {
         System.out.println(HEADER_TABLE);
         for (Club c : l) {
             System.out.println(c.toString());
