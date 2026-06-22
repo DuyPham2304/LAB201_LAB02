@@ -142,12 +142,14 @@ public class FootballManagement {
                         players.showAll(listPlayersByPosition);
                     }
                     break;
-                case 12:
+                case 12:                   
                     players.saveToFile();
                     clubs.saveToFile();
                     System.out.println("Save data sucessfully!");
                     break;
                 case 13:
+                    players.removeAll(players);
+                    clubs.removeAll(clubs);
                     players.readFromFile();
                     clubs.readFromFile();
                     System.out.println("Load data successfully!");
